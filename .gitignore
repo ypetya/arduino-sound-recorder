@@ -1,0 +1,9 @@
+bin/
+build/
+dist/
+nbproject/
+.dep.inc
+CMakeCache.txt
+Makefile
+cmake_install.cmake
+CMakeFiles/
