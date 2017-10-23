@@ -39,8 +39,9 @@ void loop() {
   // read the value from the sensor:
   sensorValue = analogRead(sensorPin);
   Serial.println(sensorValue);
-  visualFeedBack(sensorValue/DELAY);
-  delay(DELAY);
+  Serial.flush();
+  visualFeedBack(sensorValue/*/DELAY*/);
+  //delay(DELAY);
 }
 
 
