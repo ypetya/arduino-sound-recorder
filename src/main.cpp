@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include "SerialReader.h"
 #include "SerialReaderCallback.h"
+#include "SignalProcessor.h"
 #include "WavFile.h"
 
 using namespace std;
@@ -17,24 +18,29 @@ int main(int argc, char** argv) {
     string device = argv[2];
     string wavFile = argv[3];
     printf("Creating wav file : %s\n", wavFile.c_str());
-    
+
     wf = new WavFile(argv[3]);
-    
-    class CB : public SerialReaderCallback {
+
+    class CB : public SignalProcessor, public SerialReaderCallback {
+    public:
+        CB():SignalProcessor(),SerialReaderCallback(){}
         void onDataRead(int data) {
-            string str = to_string(data);
-            wf->writeData((char*)str.c_str());
+            this->process(data);
+        }
+        void write() {
+            wf->writeData(buffer, currentBufferSize);
         }
     };
-    
-    SerialReaderCallback * cb = new CB();
-    
+
+    CB * cb = new CB();
+
     printf("Opening device : %s\n", device.c_str());
     SerialReader * r = new SerialReader(seconds, device, cb);
-    
+
     r->listen();
+    cb->write();
     wf->closeWavFile();
-    
+
     return 0;
 }
 

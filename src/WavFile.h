@@ -17,7 +17,7 @@ public:
     WavFile(string file);
     ~WavFile();
     
-    void writeData(char * myData);
+    void writeData(char * myData, unsigned long len);
     void closeWavFile();
 private:
     uint32_t totalLength = 0;

@@ -1,4 +1,5 @@
 #include "SerialReader.h"
+#include <string>
 
 SerialReader::SerialReader(int seconds,
         string serialFile, SerialReaderCallback *callback) {
@@ -67,7 +68,7 @@ void SerialReader::parseBuffer() {
         }
         // get a parsed num
         if ((parsed = atoi(num)) > 0) {
-            printf("%d\n",parsed);
+            //printf("%d\n",parsed);
             cb->onDataRead(parsed);
         }// else { printf("err\n"); }
         resetNum();

@@ -16,5 +16,6 @@ add_executable(wav prototype/wav.cpp)
 add_executable(listen 
     src/SerialReader.h src/SerialReader.cpp
     src/SerialReaderCallback.h src/SerialReaderCallback.cpp
+    src/SignalProcessor.h src/SignalProcessor.cpp
     src/WavFile.h src/WavFile.cpp
     src/main.cpp)
