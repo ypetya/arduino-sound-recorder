@@ -24,11 +24,12 @@ int main(int argc, char** argv) {
     class CB : public SignalProcessor, public SerialReaderCallback {
     public:
         CB():SignalProcessor(),SerialReaderCallback(){}
-        void onDataRead(int data) {
-            this->process(data);
+        void onDataRead(char * buffer, size_t length) {
+            //this->process(data);
+            wf->writeData(buffer, length);
         }
         void write() {
-            wf->writeData(buffer, currentBufferSize);
+            //wf->writeData(buffer, currentBufferSize);
         }
     };
 
@@ -38,7 +39,7 @@ int main(int argc, char** argv) {
     SerialReader * r = new SerialReader(seconds, device, cb);
 
     r->listen();
-    cb->write();
+    //cb->write();
     wf->closeWavFile();
 
     return 0;

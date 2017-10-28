@@ -4,7 +4,7 @@
 
 #include "SerialReaderCallback.h"
 
-const int BUFFER_SIZE = 1000;
+const int BUFFER_SIZE = 1024;
 
 class SignalProcessor {
 public:
@@ -13,7 +13,7 @@ public:
     void process(int data);
     virtual void write() {};
 
-    char buffer[BUFFER_SIZE * 2];
+    char buffer[BUFFER_SIZE];
     unsigned short int currentBufferSize;
 private:
     int index;

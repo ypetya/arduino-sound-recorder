@@ -67,13 +67,13 @@ void WavFile::writeHeader() {
     memcpy(&header[20], &type, 2);
     uint16_t channels = 1;
     memcpy(&header[22], &channels, 2);
-    uint32_t sampleRate = 1000; //4410; //= 1000;
+    uint32_t sampleRate = 7500; //= 1000;
     memcpy(&header[24], &sampleRate, 4);
-    uint32_t rate_x_sample_x_channels8 = 2000; //8820; //= 2000; // 1000 * 16 / 8
+    uint32_t rate_x_sample_x_channels8 = 7500; //= 2000; // 1000 * 16 / 8
     memcpy(&header[28], &rate_x_sample_x_channels8, 4);
-    uint16_t bpschper8 = 2; // 2 = 16bit mono ( bitPerSample* Channels)/8
+    uint16_t bpschper8 = 1; // 2 = 16bit mono ( bitPerSample* Channels)/8
     memcpy(&header[32], &bpschper8, 2);
-    uint16_t bps = 16;
+    uint16_t bps = 8;
     memcpy(&header[34], &bps, 2);
     strcpy(&header[36], "data");
 

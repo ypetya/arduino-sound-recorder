@@ -17,65 +17,27 @@ SerialReader::~SerialReader() {
 }
 
 void SerialReader::listen() {
-    int limit = seconds * 1000 / 3;
-    for (int i = 0; i < limit; i++) {
-        buf_end = read(fp, &buffer[buf_start], sizeof (buffer));
-
+    unsigned long limit = seconds * 7500;
+    int j = 0;
+    size_t buf_size = sizeof (buffer);
+    for (unsigned long i = 0; i < limit; i += buf_len) {
+        //memset(buffer, 0, buf_size);
+        buf_len = read(fp, &buffer[0], buf_size);
+        j += buf_len;
+        if (j > 1000) {
+            printf(".");
+            fflush(stdout);
+            j = 0;
+        }
         parseBuffer();
     }
+    printf("\n");
 
     close(fp);
 }
 
-bool SerialReader::isNumber() {
-    return (buffer[buf_ix] >= '0' && buffer[buf_ix] <= '9');
-}
-
-bool SerialReader::isEnd() {
-    return buf_ix == buf_end;
-}
-
-void SerialReader::resetNum() {
-    memset(num, 0, sizeof (num));
-    num_start = 0;
-}
-
-void SerialReader::resetBuffer() {
-    memset(buffer, 0, sizeof (buffer));
-    buf_start = 0;
-}
-
-void SerialReader::reset(int fp) {
-    tcflush(fp, TCIFLUSH);
-    resetNum();
-    resetBuffer();
-}
-
 void SerialReader::parseBuffer() {
-    int parsed;
-
-    buf_ix = buf_start;
-
-    while (!isEnd()) {
-        // read numbers
-        for (;
-                isNumber() && !isEnd();
-                num_start++, buf_ix++) {
-            num[num_start] = buffer[buf_ix];
-        }
-        if (isEnd()) {
-            break;
-        }
-        // get a parsed num
-        if ((parsed = atoi(num)) > 0) {
-            //printf("%d\n",parsed);
-            cb->onDataRead(parsed);
-        }// else { printf("err\n"); }
-        resetNum();
-        // flush buf
-        while (!isNumber() && !isEnd()) buf_ix++;
-    }
-    resetBuffer();
+    cb->onDataRead(buffer, buf_len);
 }
 
 void SerialReader::setupPort(int fd) {
@@ -97,4 +59,9 @@ int SerialReader::openComPortFile(const char * deviceFile) {
     };
 
     return fp;
+}
+
+void SerialReader::reset(int fp) {
+    tcflush(fp, TCIFLUSH);
+    buf_len = 0;
 }
