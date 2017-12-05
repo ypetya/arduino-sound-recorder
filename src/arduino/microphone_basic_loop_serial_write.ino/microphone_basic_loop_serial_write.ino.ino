@@ -39,7 +39,7 @@ byte convert(int data) {
   }
   bias = sum/10 - 128;
 */
-  return (byte) (data & 255);
+  return (byte) (data);
 }
 
 void setup() {
